@@ -1,5 +1,5 @@
 const Validator = require("validator");
-const isEmpty = require("./is-empty");
+const checkEmpty = require("./check-empty");
 
 module.exports = function validateRegisterInput(data) {
   let errors = {};
@@ -8,8 +8,12 @@ module.exports = function validateRegisterInput(data) {
     errors.name = "Name must be between 2 and 30 characters";
   }
 
+  if (Validator.isEmpty(data.name)) {
+    errors.name = "Name field is required";
+  }
+
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: checkEmpty(errors)
   };
 };
