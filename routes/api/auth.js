@@ -6,4 +6,8 @@ const router = express.Router();
 // @access  Public
 router.get("/test", (req, res) => res.json({ msg: "Users route working" }));
 
+// @route   GET api/users/test
+// @desc    Tests users route
+// @access  Public
+
 module.exports = router;
