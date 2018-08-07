@@ -58,7 +58,7 @@ router.post(
     if (req.body.instagram) profileFields.instagram = req.body.instagram;
     if (req.body.youtube) profileFields.youtube = req.body.youtube;
 
-    profile.findOne({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // Update
         Profile.findOneAndUpdate(
