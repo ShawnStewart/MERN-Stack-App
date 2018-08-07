@@ -5,6 +5,7 @@ const passport = require("passport");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const validateProfileInput = require("../../validation/profile");
 
 // @route   GET api/profile/test
 // @desc    Tests profile route
@@ -20,7 +21,8 @@ router.get(
   (req, res) => {
     const errors = {};
 
-    Profile.findOne({ user: req.user.id })
+    Profile.findOne({ user: req.user._id })
+      .populate("user", ["name", "avatar"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -39,8 +41,15 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const profileFields = {};
-    profileFields.user = req.user.id;
+    profileFields.user = req.user._id;
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.company) profileFields.company = req.body.company;
     if (req.body.website) profileFields.website = req.body.website;
@@ -53,10 +62,10 @@ router.post(
       profileFields.skills = req.body.skills.split(",");
     }
     profileFields.social = {};
-    if (req.body.twitter) profileFields.twitter = req.body.twitter;
-    if (req.body.linkedin) profileFields.linkedin = req.body.linkedin;
-    if (req.body.instagram) profileFields.instagram = req.body.instagram;
-    if (req.body.youtube) profileFields.youtube = req.body.youtube;
+    if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
+    if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
+    if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+    if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
