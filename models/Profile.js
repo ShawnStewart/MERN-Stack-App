@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ObjectID = Schema.type.ObjectID;
+const ObjectID = Schema.Types.ObjectId;
 
 // Create Schema
 const ProfileSchema = new Schema({
@@ -97,16 +97,16 @@ const ProfileSchema = new Schema({
   ],
   social: {
     twitter: {
-      type: string
+      type: String
     },
     linkedin: {
-      type: string
+      type: String
     },
     instagram: {
-      type: string
+      type: String
     },
     youtube: {
-      type: string
+      type: String
     }
   },
   date: {
