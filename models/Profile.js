@@ -6,7 +6,7 @@ const ObjectID = Schema.Types.ObjectId;
 const ProfileSchema = new Schema({
   user: {
     type: ObjectID,
-    refs: "users"
+    ref: "users"
   },
   handle: {
     type: String,
